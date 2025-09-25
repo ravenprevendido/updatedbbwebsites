@@ -7,15 +7,14 @@ export async function OPTIONS() {
   return new Response(null, { status: 200, headers: corsHeaders });
 }
 
-
 export async function GET() {
     const pageId = process.env.FB_PAGE_ID;
     const pageAccessToken = process.env.FB_PAGE_ACCESS_TOKEN;
 
     if(!pageId || !pageAccessToken) {
-        return NextResponse.json(
+        return Response.json(
             { error: 'Missing PageID or Page Access Token in environment variables' },
-            { status: 400 }
+            { status: 400, headers: corsHeaders }
         );
     }
 
@@ -29,18 +28,21 @@ export async function GET() {
     });
     const posts = postsRes.data?.data || [];
     
-    return  NextResponse.json(posts);
+    return  Response.json(
+        posts,
+        {status: 200, headers: corsHeaders}
+    );
 
     } catch (err) {
          const error = err as AxiosError;
     console.error('Facebook API Error:', error.response?.data || error.message);
 
-    return NextResponse.json(
+    return Response.json(
       {
         error: 'Failed to fetch posts from Facebook',
         details: error.response?.data || null,
       },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
         );
     }
 }
