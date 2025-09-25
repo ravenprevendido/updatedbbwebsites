@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import {
   HiMenu,
@@ -73,7 +73,12 @@ const router = useRouter()
   const [isMobileSearchActive, setIsMobileSearchActive] = useState(false);
   const [showServicesTooltip, setShowServicesTooltip] = useState(false);
   const [showAboutTooltip, setShowAboutTooltip] = useState(false);
+  const [isHoveringTooltip, setIsHoveringTooltip] = useState(false);
+  const tooltipRef = useRef<HTMLDivElement | null>(null)
+  const hideTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
 
+
+  
   const filteredList = list.filter((item) => {
     return item.toLowerCase().includes(searchValue.toLowerCase())
   });
@@ -110,6 +115,34 @@ const handleMobileNavClick = (id: string) => {
   setMobileMenuOpen(false)
   setShowMobileSubmenu(false)
 }
+
+  const handleMouseLeaveServices = () => {
+    // Delay tooltip hide only if not hovering over the tooltip
+    if (!isHoveringTooltip) {
+      hideTooltipTimeout.current = setTimeout(() => {
+        setShowServicesTooltip(false);
+      }, 200);  // Adjust delay if necessary
+    }
+  };
+
+  // Handle mouse enter the Tooltip component
+  const handleMouseEnterTooltip = () => {
+    if (hideTooltipTimeout.current) {
+      clearTimeout(hideTooltipTimeout.current);  // Cancel timeout if mouse enters tooltip
+    }
+    setIsHoveringTooltip(true);
+    setShowServicesTooltip(true);  // Show tooltip when mouse is over it
+  };
+
+  // Handle mouse leave the Tooltip component
+  const handleMouseLeaveTooltip = () => {
+    setIsHoveringTooltip(false);  // Set flag to false when leaving the tooltip
+    hideTooltipTimeout.current = setTimeout(() => {
+      setShowServicesTooltip(false);  // Hide tooltip after delay
+    }, 200);  // Adjust delay if necessary
+  };
+
+
   return (
     <div className='h-20 w-full flex items-center justify-between px-5 py-3 text-white font-extralight text-lg z-100 bg-black fixed'>
       {/* Logo */}
@@ -151,7 +184,8 @@ const handleMobileNavClick = (id: string) => {
         <span 
         className='relative'
         onMouseEnter={() => setShowServicesTooltip(true)}
-        onMouseLeave={() => setShowServicesTooltip(false)}
+        // onMouseLeave={() => setShowServicesTooltip(false)}
+        onMouseLeave={handleMouseLeaveServices}
         >
         <a href="/services"><button
           onClick={() => handleNavClick("services")}
@@ -162,7 +196,13 @@ const handleMobileNavClick = (id: string) => {
         </button>
         </a>
         {showServicesTooltip && (
+          <div
+          ref={tooltipRef}
+          onMouseEnter={handleMouseEnterTooltip}
+          onMouseLeave={handleMouseLeaveTooltip}
+          >
           <TooltipServices services={servicesList} />
+          </div>
         )}
       </span>
         <span className='relative'>

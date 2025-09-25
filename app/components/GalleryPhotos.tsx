@@ -20,6 +20,7 @@ interface FbPost {
   };
 }
 
+
 const GalleryPhotos: React.FC = () => {
   const [posts, setPosts] = useState<FbPost[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +28,7 @@ const GalleryPhotos: React.FC = () => {
 
   const loadPosts = async () => {
     try {
-      const res = await fetch('https://updatedbbwebsites.vercel.app/api/photos');
+      const res = await fetch('/api/photos');
       const data = await res.json();
       if (Array.isArray(data)) {
         setPosts(data);

@@ -1,3 +1,0 @@
-const [searchValue, setSearchValue] = useState("");
-searchValue={searchValue}
-        setSearchValue={setSearchValue}

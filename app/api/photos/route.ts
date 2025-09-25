@@ -17,7 +17,6 @@ export async function GET() {
             { status: 400, headers: corsHeaders }
         );
     }
-
     try {
 
          const postsRes = await axios.get(`https://graph.facebook.com/v23.0/${pageId}/posts`, {
