@@ -45,7 +45,6 @@ const ContactPopup = () => {
           INQUIRE US
         </motion.h3>
       )}
-
       {/* Cards container */}
       <AnimatePresence>
         {showCards && (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Header, CardCarousel,IntroductionVideo, EmailPopup} from "./components";
 
 import { AnimatePresence, motion } from "framer-motion";
@@ -26,7 +26,9 @@ export default function Home() {
   }, [videoVisible]);
   return (
     <main className="h-full max-w-full flex flex-col bg-black relative overflow-x-hidden p-0 m-0">
+      <Suspense fallback={<></>}>
       <Header searchValue={searchValue} setSearchValue={setSearchValue} />
+        </Suspense>
       {videoVisible && <IntroductionVideo isVideoVisible={isVideoVisible} />}
       <AnimatePresence mode="wait">
         {showEmailPopup && <EmailPopup setShowEmailPopup={setShowEmailPopup} />}

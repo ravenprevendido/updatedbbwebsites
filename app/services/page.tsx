@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Header } from '../components'
 import ServicesPages from '../components/ServicesPages';
 import Footer from '../components/Footer';
@@ -12,8 +12,9 @@ const page = () => {
  
   return (
     <>
+    <Suspense fallback={<></>}>
     <Header searchValue={searchValue} setSearchValue={setSearchValue} />
-         <ServicesInfo searchValue={searchValue} />
+         <ServicesInfo searchValue={searchValue} /></Suspense>
           <Footer />
     </>
   )

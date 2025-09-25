@@ -22,6 +22,9 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
   const [selectedTitle, setSelectedTitle] = useState(title);
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('')
+  const [formStep, setFormStep] = useState<'contact' | 'otp' | 'inquiry' | 'success'>('contact');
+  const [otp, setOtp] = useState('');
+  const [productName, setProductName] = useState('')
   const [contactName, setContactName] = useState('');
   const [contactPhone, setContactPhone] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -72,14 +75,18 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
   const handleContactSelect = (contact: Contact) => {
     setSelectedContact(contact)
   }
+
+
+
+
+
+  
   const openModal = () => {
     setIsModalOpen(true);
   };
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
-
   return (
     <div className="max-w-6xl  w-full max-h-[60vh]  from-neutral-500 via-neutral-300 to-neutral-300  rounded">
       <div className="flex flex-col  md:flex-row items-center md:items-start gap-8 ">
@@ -164,50 +171,176 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
       </div>
       {/* Right: Contact Form */}
       <div className="w-full md:w-1/2 flex flex-col gap-4  p-4">
-        <h3 className="text-center font-semibold text-gray-200 mb-4">Fill Out  this form</h3>
+        <h3 className="text-center font-semibold text-gray-200 mb-4">
+          {formStep === 'contact' && 'Fill Out this form'}
+          {formStep === 'otp' && 'Enter OTP sent to your email'}
+          {formStep === 'inquiry' && 'Send Product Inquiry'}
+          {formStep === 'success' && '✅ Inquiry Sent!'}
+        </h3>
+       
+      <div className="space-y-6">
+        {formStep === 'contact' && (
+          <>
+            <div>
+              <label className="text-sm text-gray-400">Name</label>
+              <input
+                type="text"
+                className="w-full p-2 rounded-md bg-[#333] border border-gray-600 text-white"
+                placeholder="Enter your name"
+                value={contactName}
+                onChange={(e) => setContactName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="text-sm text-gray-400">Contact</label>
+              <input
+                type="text"
+                className="w-full p-2 rounded-md bg-[#333] border border-gray-600 text-white"
+                placeholder="Contact person"
+                value={contactPhone}
+                onChange={(e) => setContactPhone(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="text-sm text-gray-400">Email</label>
+              <input
+                type="email"
+                className="w-full p-2 rounded-md bg-[#333] border border-gray-600 text-white"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+          </>
+        )}
 
-        <div className="space-y-6">
+        {formStep === 'otp' && (
           <div>
-            <label className="text-sm text-gray-400">Name</label>
-            <input
-              type="text"
-              className="w-full p-2  rounded-md bg-[#333] border border-gray-600 text-white"
-              placeholder="Enter your name"
-              value={contactName}
-             onChange={(e) => setContactName(e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="text-sm text-gray-400">contact</label>
+            <label className="text-sm text-gray-400">OTP Code</label>
             <input
               type="text"
               className="w-full p-2 rounded-md bg-[#333] border border-gray-600 text-white"
-              placeholder="Contact person"
-              value={contactPhone}
-              onChange={(e) => setContactPhone(e.target.value)}
+              placeholder="Enter the OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
             />
           </div>
-          <div>
-            <label className="text-sm text-gray-400">Email</label>
-            <input
-              type="email"
-              className="w-full p-2 rounded-md bg-[#333] border border-gray-600 text-white"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+        )}
+
+        {formStep === 'inquiry' && (
+          <>
+            <div>
+              <label className="text-sm text-gray-400">Product Name</label>
+              <input
+                type="text"
+                className="w-full p-2 rounded-md bg-[#333] border border-gray-600 text-white"
+                placeholder="Product you're inquiring about"
+                value={productName}
+                onChange={(e) => setProductName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="text-sm text-gray-400">Message</label>
+              <textarea
+                className="w-full p-2 rounded-md bg-[#333] border border-gray-600 text-white"
+                rows={4}
+                placeholder="Your message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              ></textarea>
+            </div>
+          </>
+        )}
+
+        {formStep === 'success' && (
+          <div className="flex justify-center">
+            <div className="text-green-400 text-5xl animate-ping">✔</div>
           </div>
+        )}
+
 
           {/* Arrow Button */}
-          <div className="flex justify-end mt-2">
-            <button
-              className="bg-pink-500 hover:bg-pink-600 text-white text-xl px-4 py-2 rounded-full"
-            >
-              <FaArrowCircleRight/>
-            </button>
-          </div>
+         {/* Arrow Button */}
+        <div className="flex justify-end mt-2">
+          <button
+            onClick={async () => {
+              try {
+                let res, data;
+
+                // Step 1: Contact - Send OTP Email
+                if (formStep === 'contact') {
+                  res = await fetch('/api/email-verification', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: contactName, contact: contactPhone, email }),
+                  });
+
+                  if (!res.ok) throw new Error('Failed to send OTP');
+                  data = await res.json();
+
+                  if (data.success) {
+                    setFormStep('otp');
+                  } else {
+                    alert(data.message || 'Failed to send OTP');
+                  }
+                }
+
+                // Step 2: OTP Verification
+                else if (formStep === 'otp') {
+                  res = await fetch('/api/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, otp }),
+                  });
+
+                  if (!res.ok) throw new Error('Failed to verify OTP');
+                  data = await res.json();
+
+                  if (data.success) {
+                    setFormStep('inquiry');
+                  } else {
+                    alert(data.message || 'OTP verification failed');
+                  }
+                }
+
+                // Step 3: Inquiry Submission
+                else if (formStep === 'inquiry') {
+                  res = await fetch('/api/product-inquiry', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, productName, message }),
+                  });
+
+                  if (!res.ok) throw new Error('Failed to send inquiry');
+                  data = await res.json();
+
+                  if (data.success) {
+                    setFormStep('success');
+                    setTimeout(() => {
+                      setContactName('');
+                      setContactPhone('');
+                      setEmail('');
+                      setOtp('');
+                      setProductName('');
+                      setMessage('');
+                      setFormStep('contact');
+                    }, 3000);
+                  } else {
+                    alert(data.message || 'Failed to send inquiry');
+                  }
+                }
+              } catch (error: any) {
+                alert(error.message || 'Something went wrong');
+              }
+            }}
+            className="bg-pink-500 hover:bg-pink-600 text-white text-xl px-4 py-2 rounded-full"
+            aria-label="Next step"
+          >
+            <FaArrowCircleRight />
+          </button>
         </div>
 
+        </div>
         {/* Other ways to contact */}
         <div className="mt-2 text-center text-sm text-gray-400">other ways to contact</div>
        <div className="flex justify-between text-xs text-gray-500 mt-4 px-2 md:px-4">
@@ -240,5 +373,4 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
 };
 
 export default ServiceDescription;
-
 
