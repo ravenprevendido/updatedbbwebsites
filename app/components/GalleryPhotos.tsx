@@ -27,7 +27,7 @@ const GalleryPhotos: React.FC = () => {
 
   const loadPosts = async () => {
     try {
-      const res = await fetch('/api/photos');
+      const res = await fetch('https://updatedbbwebsites.vercel.app/api/photos');
       const data = await res.json();
       if (Array.isArray(data)) {
         setPosts(data);

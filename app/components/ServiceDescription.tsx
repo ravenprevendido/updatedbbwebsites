@@ -269,7 +269,7 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
 
                 // Step 1: Contact - Send OTP Email
                 if (formStep === 'contact') {
-                  res = await fetch('/api/email-verification', {
+                  res = await fetch('https://updatedbbwebsites.vercel.app/api/email-verification', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name: contactName, contact: contactPhone, email }),
@@ -287,7 +287,7 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
 
                 // Step 2: OTP Verification
                 else if (formStep === 'otp') {
-                  res = await fetch('/api/verify-otp', {
+                  res = await fetch('https://updatedbbwebsites.vercel.app/api/verify-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, otp }),
@@ -305,7 +305,7 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
 
                 // Step 3: Inquiry Submission
                 else if (formStep === 'inquiry') {
-                  res = await fetch('/api/product-inquiry', {
+                  res = await fetch('https://updatedbbwebsites.vercel.app/api/product-inquiry', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, productName, message }),
