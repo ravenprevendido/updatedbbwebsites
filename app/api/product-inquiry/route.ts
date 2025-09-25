@@ -1,4 +1,11 @@
+import { corsHeaders } from "@/lib/corsHeaders";
 import { otpStore } from "@/utils/otpStore";
+
+
+export async function OPTIONS() {
+  return new Response(null, { status: 200, headers: corsHeaders });
+}
+
 
 export async function POST(req: Request) {
   const { email, otp } = await req.json(); // Extract email and OTP from the request body

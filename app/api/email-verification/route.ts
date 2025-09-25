@@ -1,5 +1,12 @@
 import { generateOTP, otpStore } from '@/utils/otpStore';
 import { sendOtpEmail } from '@/utils/mailer'; // Import the updated sendOtpEmail function
+import { corsHeaders } from '@/lib/corsHeaders';
+
+
+export async function OPTIONS() {
+  return new Response(null, { status: 200, headers: corsHeaders });
+}
+
 
 export async function POST(req: Request) {
   const { name, contact, email } = await req.json();
