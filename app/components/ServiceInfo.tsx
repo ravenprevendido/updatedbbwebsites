@@ -15,7 +15,7 @@ type Props = {
 const cards = [
   {
     id: '1',
-    title: 'Banner / Signages',
+    title: 'Offset / Printing Forms & reciepts',
     frontImg: '/BOOK.png',
     hoverImg: '/largformatimg.webp',
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium recusandae, vero vel molestias voluptatem nam et reprehenderit. Vero repellat ipsa voluptatum maxime commodi.',
@@ -32,7 +32,7 @@ const cards = [
   
   {
     id: '2',
-    title: 'Box Clothing',
+    title: 'Corporate Giveaways',
     frontImg: '/BOOK.png',
     hoverImg: '/boxclothing.png',
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium recusandae, vero vel molestias voluptatem nam et reprehenderit. Vero repellat ipsa voluptatum maxime commodi.',
@@ -48,7 +48,7 @@ const cards = [
 
   {
     id: '3',
-    title: 'Brand Stickers',
+    title: 'Large Format Services',
     frontImg: '/BOOK.png',
     hoverImg: '/brandstickers.png',
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium recusandae, vero vel molestias voluptatem nam et reprehenderit. Vero repellat ipsa voluptatum maxime commodi.',
@@ -60,10 +60,9 @@ const cards = [
       {src: '/brandstickers/image2.png', label: 'label stickers4'}
     ]
   },
-
   {
     id: '4',
-    title: 'Calling cards ',
+    title: 'Sticker & Labels',
     frontImg: '/BOOK.png',
     hoverImg: '/callingcards.png',
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium recusandae, vero vel molestias voluptatem nam et reprehenderit. Vero repellat ipsa voluptatum maxime commodi.',
@@ -78,7 +77,7 @@ const cards = [
   },
   {
     id: '5',
-    title: 'Corporate Give a Ways',
+    title: 'Signage',
     frontImg: '/BOOK.png',
     hoverImg: '/corporategiveaways.png',
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium recusandae, vero vel molestias voluptatem nam et reprehenderit. Vero repellat ipsa voluptatum maxime commodi.',
@@ -93,7 +92,7 @@ const cards = [
   },
   {
     id: '6',
-    title: 'Decal Stickers',
+    title: 'Marketing Collaterals',
     frontImg: '/BOOK.png',
     hoverImg: '/decalstickers.png',
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium recusandae, vero vel molestias voluptatem nam et reprehenderit. Vero repellat ipsa voluptatum maxime commodi.',
@@ -109,7 +108,7 @@ const cards = [
 
   {
     id: '7',
-    title: 'Events / cards Invitation',
+    title: 'Wall Mural',
     frontImg: '/BOOK.png',
     hoverImg: '/cardsinvitation.png',
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium recusandae, vero vel molestias voluptatem nam et reprehenderit. Vero repellat ipsa voluptatum maxime commodi.',
@@ -125,7 +124,7 @@ const cards = [
 
   {
     id: '8',
-    title: 'ID / Lanyard',
+    title: 'Glass Frosted Sticker',
     frontImg: '/BOOK.png',
     hoverImg: '/idlanyard.png',
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium recusandae, vero vel molestias voluptatem nam et reprehenderit. Vero repellat ipsa voluptatum maxime commodi.',
@@ -140,7 +139,7 @@ const cards = [
   },
   {
     id: '9',
-    title: 'Marketing Collaterals',
+    title: 'Transit Ads',
     frontImg: '/BOOK.png',
     hoverImg: '/marketingcollaterals.png',
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium recusandae, vero vel molestias voluptatem nam et reprehenderit. Vero repellat ipsa voluptatum maxime commodi.',
@@ -156,7 +155,7 @@ const cards = [
   },
   {
     id: '10',
-    title: 'WallMural',
+    title: 'Graphic design',
     frontImg: '/BOOK.png',
     hoverImg: '/wallmural.png',
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium recusandae, vero vel molestias voluptatem nam et reprehenderit. Vero repellat ipsa voluptatum maxime commodi.',

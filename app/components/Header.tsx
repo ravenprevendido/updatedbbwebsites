@@ -62,9 +62,25 @@ const router = useRouter()
     'contact'
   ]);
 
-
   const aboutList = ['About Us', 'Mission and Vission', 'Why Choose Burnbox Printing?'];
-  const servicesList = ['Offset Printing / Forms & Reciept', 'Corporate Giveaways', 'Large format Services', 'Stickers & Labels', 'Signage', 'Marketing Collaterals', 'Wall Mural',  'Glass Frosted Sticker', 'Transit adds', 'Graphic Design', 'Logo design', 'Other services.']
+  
+  const servicesList = [
+  {
+    name: "Offset Printing / Forms & Reciept",
+  },
+  { name: "Corporate Giveaways" },
+  { name: "Large format Services" },
+  { name: "Stickers & Labels" },
+  { name: "Signage" },
+  { name: "Marketing Collaterals" },
+  { name: "Wall Mural" },
+  { name: "Glass Frosted Sticker" },
+  { name: "Transit adds" },
+  { name: "Graphic Design" },
+  { name: "Logo design" },
+  { name: "Other services.", nestedTooltip: ["Receipt types", "Forms customization", "Bulk orders"],
+ },
+];
   const buttons = ['wallmural', 'labelsticker', 'photocanvas', 'pvclanyard']
   
   const [showToolTip, setToolTip] = useState(false)
@@ -76,6 +92,7 @@ const router = useRouter()
   const [isHoveringTooltip, setIsHoveringTooltip] = useState(false);
   const tooltipRef = useRef<HTMLDivElement | null>(null)
   const hideTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
 
   
@@ -91,6 +108,34 @@ const router = useRouter()
       }
     }
   }
+
+
+
+  useEffect(() => {
+    // detect 
+    const handleResize = () =>{
+      setIsMobile(window.innerWidth < 768);
+    };
+
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    }
+  }, [])
+
+  const handleClickTooltipAbout = () => {
+    setShowAboutTooltip(!showAboutTooltip);
+  }
+
+  const handleClickTooltipServices = () => {
+    setShowServicesTooltip(!showServicesTooltip)
+  }
+
+
   useEffect(() => {
     if(searchValue) {
       handleSearch();
@@ -115,6 +160,15 @@ const handleMobileNavClick = (id: string) => {
   setMobileMenuOpen(false)
   setShowMobileSubmenu(false)
 }
+
+
+  const handleMouseLeaveLeaveAbout = () => {
+    if(!isHoveringTooltip) {
+      hideTooltipTimeout.current = setTimeout(() => {
+        setShowAboutTooltip(false);
+      }, 200)
+    }
+  }
 
   const handleMouseLeaveServices = () => {
     // Delay tooltip hide only if not hovering over the tooltip
@@ -143,6 +197,25 @@ const handleMobileNavClick = (id: string) => {
   };
 
 
+ const handleMouseEnterTooltipAbout = () => {
+    if (hideTooltipTimeout.current) {
+      clearTimeout(hideTooltipTimeout.current);  // Cancel timeout if mouse enters tooltip
+    }
+    setIsHoveringTooltip(true);
+    setShowAboutTooltip(true);  // Show tooltip when mouse is over it
+  };
+
+  // Handle mouse leave the Tooltip component
+  const handleMouseLeaveTooltipAbout = () => {
+    setIsHoveringTooltip(false);  // Set flag to false when leaving the tooltip
+    hideTooltipTimeout.current = setTimeout(() => {
+      setShowAboutTooltip(false);  // Hide tooltip after delay
+    }, 200);  // Adjust delay if necessary
+  };
+
+  
+
+
   return (
     <div className='h-20 w-full flex items-center justify-between px-5 py-3 text-white font-extralight text-lg z-100 bg-black fixed'>
       {/* Logo */}
@@ -166,7 +239,7 @@ const handleMobileNavClick = (id: string) => {
         </a>
         <span className='relative'
           onMouseEnter={() => setShowAboutTooltip(true)}
-          onMouseLeave={() => setShowAboutTooltip(false)}
+          onMouseLeave={handleMouseLeaveLeaveAbout}
         >
         <a href="/about">
         <button
@@ -177,9 +250,16 @@ const handleMobileNavClick = (id: string) => {
           About
         </button>
         </a>
+       
         {showAboutTooltip && (
+          <div ref={tooltipRef}
+            onMouseEnter={handleMouseEnterTooltipAbout}
+            onMouseLeave={handleMouseLeaveTooltipAbout}
+          >
           <AboutTooltip aboutus={aboutList}/>
+          </div>
         )}
+        
           </span>
         <span 
         className='relative'
@@ -205,18 +285,18 @@ const handleMobileNavClick = (id: string) => {
           </div>
         )}
       </span>
-        <span className='relative'>
+        {/* <span className='relative'>
           <a href="#gallery" ><button
             type="button"
             className='pl-5 pr-3 h-full flex gap-2 items-center  hover:text-pink transition ease-in duration-200'
             onClick={() => setToolTip(!showToolTip)}
           >
             Gallery
-            <HiChevronDown />
+
           </button>
           </a>
           {showToolTip && <ToolTip buttons={buttons} setToolTip={setToolTip} />}
-        </span>
+        </span> */}
          <a href="/contact">
         <button
           onClick={() => handleNavClick("contact")}
@@ -284,19 +364,94 @@ const handleMobileNavClick = (id: string) => {
   <div
     className={`absolute top-20 left-0 w-full bg-black text-white px-7 space-y-4 z-40 transition-[max-height,opacity,transform] duration-300 ease-in-out overflow-hidden max-h-screen opacity-100`}
   >
-    {['Home', 'Services', 'About'].map((item, index) => (
-      <button
-        key={item}
-        onClick={() => handleMobileNavClick(item.toLowerCase())}
-        className='block w-full text-left hover:text-pink animate-fadeInUp'
-        style={{ animationDelay: `${index * 0.1 + 0.2}s` }}
-      >
-        {item}
-      </button>
-    ))}
+ {['Home', 'About', 'Services', 'Contact'].map((item, index) => {
+  const isAbout = item === 'About';
+  const isServices = item === 'Services';
+  return (
+    <div
+      key={item}
+      className="w-full animate-fadeInUp"
+      style={{ animationDelay: `${index * 0.1 + 0.2}s` }}
+    >
+      {/* Top-level Menu Item */}
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => {
+            if (isAbout) {
+              setShowAboutTooltip(prev => !prev);
+              setShowServicesTooltip(false);
+            } else if (isServices) {
+              setShowServicesTooltip(prev => !prev);
+              setShowAboutTooltip(false);
+            } else {
+              handleMobileNavClick(item.toLowerCase());
+              setShowAboutTooltip(false);
+              setShowServicesTooltip(false);
+            }
+          }}
+          className="flex items-center gap-2 text-left hover:text-pink transition"
+        >
+          <span>{item}</span>
+          {(isAbout || isServices) && (
+            <HiChevronDown
+              className={`
+                text-pink-500 transition-transform duration-300 
+                ${((isAbout && showAboutTooltip) || (isServices && showServicesTooltip)) ? 'rotate-180' : ''}
+              `}
+              size={18}
+            />
+          )}
+        </button>
+      </div>
+      {/* Submenu */}
+      {isAbout && showAboutTooltip && (
+        <div className="ml-4 mt-2 space-y-2 bg-black/80 rounded p-2">
+          {aboutList.map((text, idx) => (
+            <button
+              key={idx}
+              className="block text-sm text-left hover:text-pink transition"
+              onClick={() => {
+                const id = text.toLowerCase().replace(/\s+/g, '-');
+                const section = document.getElementById(id);
+                if (section) {
+                  section.scrollIntoView({ behavior: 'smooth' });
+                }
+                setMobileMenuOpen(false);
+                setShowAboutTooltip(false);
+              }}
+            >
+              {text}
+            </button>
+          ))}
+        </div>
+      )}
+      {isServices && showServicesTooltip && (
+        <div className="ml-4 mt-2 space-y-2 bg-black/80 rounded p-2">
+          {servicesList.map((service, idx) => (
+            <button
+              key={idx}
+              className="block text-sm text-left hover:text-pink transition"
+              onClick={() => {
+                const id = service.name.toLowerCase().replace(/\s+/g, '-');
+                const section = document.getElementById(id);
+                if (section) {
+                  section.scrollIntoView({ behavior: 'smooth' });
+                }
+                setMobileMenuOpen(false);
+                setShowServicesTooltip(false);
+              }}
+            >
+              {service.name}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+})}
     <div className='block w-full text-left animate-fadeInUp' style={{ animationDelay: '0.4s' }}>
        <div className='flex items-center gap-2 w-full'>
-       <button
+       {/* <button
           onClick={() => {
             const section = document.getElementById('gallery');
             if (section) {
@@ -308,15 +463,15 @@ const handleMobileNavClick = (id: string) => {
           className='relative flex-1 w-full text-left hover:text-pink transition'
         >
           Gallery
-        </button>
+        </button> */}
       </div>
         {/* 📌 Chevron — Toggles submenu */}
-        <button
+        {/* <button
           onClick={() => setShowMobileSubmenu(!showMobileSubmenu)}
           className='absolute flex-shrink-0 top-2 ml-15 text-1xl text-white hover:text-pink transition-transform duration-300'
         >
           <HiChevronDown className={`${showMobileSubmenu ? 'rotate-180' : ''} hover:text-pink`} />
-        </button>
+        </button> */}
       {showMobileSubmenu && (
         <div className='ml-4 mt-3 space-y-2'>
           {buttons.map((item, index) => (

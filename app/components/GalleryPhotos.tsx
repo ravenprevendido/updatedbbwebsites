@@ -57,7 +57,7 @@ const GalleryPhotos: React.FC = () => {
   if (posts.length === 0) return <p className="text-center">No posts with images found.</p>;
 
   return (
-    <section id='gallery' className="relative min-h-screen custom-gallery-bg w-full  px-4 py-20 flex flex-col items-center">
+    <section id='gallery' className="relative min-h-screen custom-gallery-bg w-full  px-4 py-20 flex flex-col items-center overflow-hidden ">
       <img className='absolute opacity-10 items-center ml-350 mt-30' src="/burnboxlogo.png" alt="Background Logo" />
       <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-center text-pink mb-12">Gallery</h1>
 

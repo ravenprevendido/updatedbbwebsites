@@ -36,8 +36,8 @@ const AboutPages = () => {
     </div>
    </motion.div>
    <MissionVission/>
-   
     </section>
   )
 }
+
 export default AboutPages

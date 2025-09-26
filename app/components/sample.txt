@@ -1,0 +1,110 @@
+In your Header.tsx, add:
+
+const [isAboutTooltipOpen, setIsAboutTooltipOpen] = useState(false);
+const [isServicesTooltipOpen, setIsServicesTooltipOpen] = useState(false);
+
+🧠 2. Handle click toggles
+
+Add these handlers:
+
+const toggleAboutTooltip = () => {
+  setIsAboutTooltipOpen((prev) => !prev);
+  setIsServicesTooltipOpen(false);
+};
+
+const toggleServicesTooltip = () => {
+  setIsServicesTooltipOpen((prev) => !prev);
+  setIsAboutTooltipOpen(false);
+};
+
+🧼 3. Blur effect logic
+
+You can blur the mobile menu like this:
+
+const isAnyMobileTooltipOpen = isAboutTooltipOpen || isServicesTooltipOpen;
+
+
+Then apply conditional Tailwind class:
+
+<div className={`mobile-menu-wrapper ${isAnyMobileTooltipOpen ? 'backdrop-blur-sm' : ''}`}>
+
+
+Or full opacity + blur:
+
+<div className={`transition-all duration-300 ${isAnyMobileTooltipOpen ? 'backdrop-blur-sm opacity-60' : 'opacity-100'}`}>
+
+🧱 4. Render Services & About menu in mobile
+
+Example:
+
+<div className="space-y-4">
+  {['Home', 'Contact'].map((item, index) => (
+    <button
+      key={item}
+      onClick={() => handleMobileNavClick(item.toLowerCase())}
+      className="flex items-center justify-between w-full text-left hover:text-pink"
+    >
+      {item}
+    </button>
+  ))}
+
+  {/* About with Arrow */}
+  <div className="relative">
+    <button
+      onClick={toggleAboutTooltip}
+      className="flex items-center justify-between w-full text-left hover:text-pink"
+    >
+      <span>About</span>
+      <HiChevronDown className={`transition-transform ${isAboutTooltipOpen ? 'rotate-180 text-pink' : ''}`} />
+    </button>
+    {isAboutTooltipOpen && (
+      <div className="absolute mt-2 ml-4 bg-black text-white p-4 shadow-lg rounded-md z-50">
+        {aboutList.map((item, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              const id = item.toLowerCase().replace(/\s+/g, '-');
+              const section = document.getElementById(id);
+              if (section) section.scrollIntoView({ behavior: 'smooth' });
+              setMobileMenuOpen(false);
+              setIsAboutTooltipOpen(false);
+            }}
+            className="block w-full text-left text-sm hover:text-pink"
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+
+  {/* Services with Arrow */}
+  <div className="relative">
+    <button
+      onClick={toggleServicesTooltip}
+      className="flex items-center justify-between w-full text-left hover:text-pink"
+    >
+      <span>Services</span>
+      <HiChevronDown className={`transition-transform ${isServicesTooltipOpen ? 'rotate-180 text-pink' : ''}`} />
+    </button>
+    {isServicesTooltipOpen && (
+      <div className="absolute mt-2 ml-4 bg-black text-white p-4 shadow-lg rounded-md z-50">
+        {servicesList.map((item, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              const id = item.name.toLowerCase().replace(/\s+/g, '-');
+              const section = document.getElementById(id);
+              if (section) section.scrollIntoView({ behavior: 'smooth' });
+              setMobileMenuOpen(false);
+              setIsServicesTooltipOpen(false);
+            }}
+            className="block w-full text-left text-sm hover:text-pink"
+          >
+            {item.name}
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+</div>

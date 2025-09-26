@@ -88,68 +88,78 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
     setIsModalOpen(false);
   };
   return (
-    <div className="max-w-6xl  w-full max-h-[60vh]  from-neutral-500 via-neutral-300 to-neutral-300  rounded">
-      <div className="flex flex-col  md:flex-row items-center md:items-start gap-8 ">
-       
-        {/* Left: Image */} 
-        <div className="w-full md:w-1/2 flex justify-center">
-          <img
-            src={selectedImage}
-            alt={title}
-            className="w-[250px] h-[250px] object-contain"
-          />
-        </div>
-        {/* Right: Content */}
-        <div className="w-full md:w-2/2 text-center md:text-left space-y-2">
-          <h2 className="text-3xl md:text-4xl font-bold w-full text-center text-black">{selectedTitle}</h2>
-          <p className="text-gray-700 text-sm">{description}</p>
-          <p className="text-pink-600 font-medium text-sm">Key Features</p>
-          <ul className="text-left text-sm   font-semibold text-gray-600">
-            {features.map((feature, index) => (
-              <li key={index}>{feature}</li>  
-            ))}
-          </ul>
-          <button 
-          onClick={openModal}
-          className="mt-4 px-6 py-2 bg-pink-500 text-white rounded-2xl hover:bg-transparent hover:text-black hover:border border-pink-500">
-            Inquire Now
-          </button>
-        </div>
-      </div>
-      {/* Image slider */}
-     <p className='text-black font-regular mt-6 text-center py-2 mb-2 md:mb-4 md:py-2'>You migh want also like this</p>
+  <div className="max-w-4xl  w-full max-h-[100vh]  from-neutral-500 via-neutral-300 to-neutral-300  rounded">
+    <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
+  {/* Left: Image */}
+  <div className="w-full md:w-1/2 flex justify-center relative">
+  
+    <img
+      src={selectedImage} // Replace with your new image
+      alt={selectedTitle}  // Update this if necessary
+      className="w-[250px] h-[250px] object-contain" // Maintain responsiveness
+    />
+  </div>
+
+  {/* Right: Content */}
+  <div className="w-full md:w-1/2 text-center md:text-left space-y-2">
+    <h2 className="text-3xl md:text-4xl font-bold w-full text-center text-black">
+      {selectedTitle}  {/* Replace with the new title */}
+    </h2>
+    <p className="text-gray-700 text-sm">
+      {description}  {/* Update with the new description */}
+    </p>
+    <p className="text-pink-600 font-medium text-sm">Key Features</p>
+    <ul className="text-left text-sm font-semibold text-gray-600">
+      {features.map((feature, index) => (
+        <li key={index}>{feature}</li>  
+      ))}
+    </ul>
+    <button
+      onClick={openModal}
+      className="mt-4 px-6 py-2 bg-pink-500 text-white rounded-2xl hover:bg-transparent hover:text-black hover:border border-pink-500">
+      Inquire Now
+    </button>
+  </div>
+</div>
+
+{/* Image Slider */}
+<p className="text-black font-regular mt-6 text-center py-2 mb-2 md:mb-4 md:py-2">
+  You might want also like this
+</p>
+
+<div
+  ref={scrollRef}
+  className="w-full bg-black p-4 rounded-lg mt-4 overflow-x-auto scrollbar-hide cursor-grab"
+  onMouseDown={handleMouseDown}
+  onMouseLeave={handleMouseLeave}
+  onMouseUp={handleMouseUp}
+  onMouseMove={handleMouseMove}
+>
+  <div className="flex gap-4 w-max px-2">
+    {relatedImages.map((item, index) => (
       <div
-        ref={scrollRef}
-        className="w-full  bg-black p-4 rounded-lg mt-4 overflow-x-auto scrollbar-hide cursor-grab"
-        onMouseDown={handleMouseDown}
-        onMouseLeave={handleMouseLeave}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
+        key={index}
+        className="relative group w-40 h-40 bg-gradient-to-br from-neutral-700 to-neutral-500 rounded-lg overflow-hidden flex items-center justify-center"
       >
-        <div className="flex gap-4 w-max px-2">
-            {relatedImages.map((item, index) => (
-                <div
-                  key={index}
-                  className="relative group w-40 h-40 bg-gradient-to-br from-neutral-700 to-neutral-500 rounded-lg overflow-hidden flex items-center justify-center"
-                >
-                  <img
-                    key={index}
-                    src={item.src}
-                    alt={item.label}
-                    onClick={() => handleImageClick(item.src, item.label)}
-                    className="w-40 h-auto object-contain rounded shadow cursor-pointer"
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-center text-xs py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    {item.label}
-                  </div>
-                </div>
-              ))}
-          </div>  
+        <img
+          key={index}
+          src={item.src}
+          alt={item.label}
+          onClick={() => handleImageClick(item.src, item.label)}
+          className="w-40 h-auto object-contain rounded shadow cursor-pointer"
+        />
+        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white text-center text-xs py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          {item.label}
+        </div>
       </div>
+    ))}
+  </div>
+</div>
+
       {/* Modal for "Inquire Now" */}
 {isModalOpen && (
   <div onClick={closeModal} className="fixed inset-0 z-50 bg-opacity-0 flex justify-center items-center  py-6 px-4">
-    <div onClick={(e) => e.stopPropagation()} className="bg-[#1a1a1a] text-white p-6 md:p-8 rounded-lg w-full max-w-6xl max-h-[65vh] overflow-y-auto  flex flex-col md:flex-row gap-8">
+    <div onClick={(e) => e.stopPropagation()} className="bg-[#1a1a1a] text-white p-6 md:p-8 rounded-lg w-full max-w-6xl max-h-[100vh] overflow-y-auto  flex flex-col md:flex-row gap-8">
       {/* Left: Product Details */}
       <div className="w-full md:w-1/2 border-pink  p-4  rounded-md bg-[#262626] flex flex-col ">
         <div className="w-full flex justify-center">

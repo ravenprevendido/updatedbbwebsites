@@ -22,7 +22,6 @@ const ContactPopup = () => {
   return (
     <section className="custom-gallery-bg relative w-full h-screen flex flex-col items-center justify-center custom-gallery-bg text-white px-10 bg-black/50 backdrop-blur-sm">
 
-      {/* Show CHOOSE REPRESENTATIVE SALES only if cards are NOT shown */}
     
       {/* Show INQUIRE US only if cards ARE shown */}
       {showCards && (
@@ -40,7 +39,7 @@ const ContactPopup = () => {
       <AnimatePresence>
         {showCards && (
           <motion.div
-            className="flex justify-center gap-12"
+            className="flex justify-center gap-50 lg:flex flex-wrap items-start"
             initial={{ opacity: 0, filter: 'blur(6px)' }}
             animate={{ opacity: 1, filter: 'blur(0)' }}
             transition={{ duration: 0.8 }}
@@ -48,14 +47,13 @@ const ContactPopup = () => {
             {['person1', 'person2'].map((person) => (
               <motion.div
                 key={person}
-                className="bg-black rounded-2xl shadow-lg w-[680px] min-h-[340px] p-8 cursor-pointer flex flex-row text-white overflow-visible"
+                className="bg-black rounded-2xl shadow-lg max-w-2xl min-h-[340px] sm:p-8 cursor-pointer flex flex-row text-white overflow-visible relative"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
-                // Remove onClick handler, or keep it if you want some action (currently removed)
-                // onClick={() => setSelectedContact(person as 'person1' | 'person2')}
+               
               >
                 {/* Left side: Text content */}
                 <div className="flex flex-col flex-1 pr-8">
@@ -108,15 +106,15 @@ const ContactPopup = () => {
                   </div>
                 </div>
                 {/* Right side: Rectangular Profile Image */}
-                <div className="relative w-74 h-100 flex-shrink-0 overflow-hidden border-pink self-center rounded-lg">
-                  <div className='absolute top-20'>
+                <div className="relative w-74 h-100 flex-shrink-0 border-pink self-center rounded-lg">
+                <div className='absolute top-14 -translate-y-2/11 -right-45 '>
                   <img
                     src={person === 'person1' ? '/maam.png' : '/siraljun.png'}
                     alt="Profile"
                     className="w-full h-full object-cover"
                   />
-                  </div>
                 </div>
+              </div>
               </motion.div>
             ))}
           </motion.div>
