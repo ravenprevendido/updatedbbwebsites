@@ -14,6 +14,7 @@ import ToolTip from './ToolTip'
 import { useRouter, useSearchParams } from 'next/navigation';
 import TooltipServices from './TooltipServices';
 import AboutTooltip from './AboutTooltip';
+import { AnimatePresence, motion } from 'framer-motion';
 // header props
 type HeaderProps = {
   searchValue: string;
@@ -406,7 +407,15 @@ const handleMobileNavClick = (id: string) => {
       </div>
 
       {/* Submenu */}
+      <AnimatePresence>
       {isAbout && showAboutTooltip && (
+        <motion.div
+          key="tooltip-overlay"
+          initial={{ opacity: 0, scale: 1,y: 10}}
+          animate={{opacity: 1, scale: 1, y : 0}}
+          exit={{opacity: 0, scale: 0.8, transition: { duration: 0.2 }}}
+          transition={{duration: 0.2, ease: 'easeInOut'}}
+        >
         <div className="ml-4 mt-2 space-y-2  bg-zinc-900 rounded p-6 w-[280px]">
           {aboutList.map((text, idx) => (
             <button
@@ -426,8 +435,18 @@ const handleMobileNavClick = (id: string) => {
             </button>
           ))}
         </div>
+        </motion.div>
       )}
+      </AnimatePresence>
+      <AnimatePresence>
       {isServices && showServicesTooltip && (
+        <motion.div
+          key="tooltip-overlay"
+          initial={{ opacity: 0, scale: 1,y: 10}}
+          animate={{opacity: 1, scale: 1, y : 0}}
+          exit={{opacity: 0, scale: 0.8, transition: { duration: 0.2 }}}
+          transition={{duration: 0.2, ease: 'easeInOut'}}
+        >
         <div className="ml-4 mt-2 space-y-2 bg-zinc-900 rounded p-6 w-[280px]">
           {servicesList.map((service, idx) => (
             <button
@@ -447,12 +466,13 @@ const handleMobileNavClick = (id: string) => {
             </button>
           ))}
         </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
+    
   );
 })}
-
-
 
     <div className='block w-full text-left animate-fadeInUp' style={{ animationDelay: '0.4s' }}>
        <div className='flex items-center gap-2 w-full'>
