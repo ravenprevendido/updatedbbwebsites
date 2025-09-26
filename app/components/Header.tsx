@@ -367,6 +367,7 @@ const handleMobileNavClick = (id: string) => {
  {['Home', 'About', 'Services', 'Contact'].map((item, index) => {
   const isAbout = item === 'About';
   const isServices = item === 'Services';
+
   return (
     <div
       key={item}
@@ -403,9 +404,10 @@ const handleMobileNavClick = (id: string) => {
           )}
         </button>
       </div>
+
       {/* Submenu */}
       {isAbout && showAboutTooltip && (
-        <div className="ml-4 mt-2 space-y-2 bg-black/80 rounded p-2">
+        <div className="ml-4 mt-2 space-y-2  bg-zinc-900 rounded p-6 w-[280px]">
           {aboutList.map((text, idx) => (
             <button
               key={idx}
@@ -426,7 +428,7 @@ const handleMobileNavClick = (id: string) => {
         </div>
       )}
       {isServices && showServicesTooltip && (
-        <div className="ml-4 mt-2 space-y-2 bg-black/80 rounded p-2">
+        <div className="ml-4 mt-2 space-y-2 bg-zinc-900 rounded p-6 w-[280px]">
           {servicesList.map((service, idx) => (
             <button
               key={idx}
@@ -449,6 +451,9 @@ const handleMobileNavClick = (id: string) => {
     </div>
   );
 })}
+
+
+
     <div className='block w-full text-left animate-fadeInUp' style={{ animationDelay: '0.4s' }}>
        <div className='flex items-center gap-2 w-full'>
        {/* <button

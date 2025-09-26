@@ -10,7 +10,6 @@ const MissionVission = () => {
     backgroundRepeat: 'no-repeat',
     minHeight: '80vh',
   }}>
-  
         <div className=' max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-28 mt-80'>
     {/* mission and vission cards */}
     {/* mission */}
@@ -52,7 +51,7 @@ const MissionVission = () => {
             src="/visionimages.png"
             alt="Vision"
             draggable="false"
-            className="absolute bottom-0 top-20 right-0 -translate-y-full rotate-[30deg] w-[220px] h-auto object-contain z-[-1]"
+            className="absolute bottom-0 top-20 right-0 -translate-y-full rotate-[30deg] w-[220px] h-auto object-contain z-[-99]"
           />
           {/* Content */}
           <h3 className="text-lg font-bold mb-2 mt-4">Our Vision</h3>
