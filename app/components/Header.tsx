@@ -383,20 +383,30 @@ const handleMobileNavClick = (id: string) => {
     >
       {/* Top-level Menu Item */}
       <div className="flex items-center gap-2">
-        <button
-          onClick={() => {
-            if (isAbout) {
+        <button  
+        onClick={() => {
+          if (isAbout) {
+            if (isMobile) {
+              router.push('/about');
+              setMobileMenuOpen(false);
+            } else {
               setShowAboutTooltip(prev => !prev);
               setShowServicesTooltip(false);
-            } else if (isServices) {
+            }
+          } else if (isServices) {
+            if (isMobile) {
+              router.push('/services');
+              setMobileMenuOpen(false);
+            } else {
               setShowServicesTooltip(prev => !prev);
               setShowAboutTooltip(false);
-            } else {
-              handleMobileNavClick(item.toLowerCase());
-              setShowAboutTooltip(false);
-              setShowServicesTooltip(false);
             }
-          }}
+          } else {
+            handleMobileNavClick(item.toLowerCase());
+            setShowAboutTooltip(false);
+            setShowServicesTooltip(false);
+          }
+        }}
           className="flex items-center gap-2 text-left hover:text-pink transition"
         >
           <span>{item}</span>

@@ -144,3 +144,30 @@ React to hover globally with Framer Motion:
 >
   <ImageCard {...card} onClick={handleCardClick} isHovered />
 </motion.div>
+
+onClick={() => {
+  if (isAbout) {
+    if (isMobile) {
+      router.push('/about');
+      setMobileMenuOpen(false);
+    } else {
+      setShowAboutTooltip(prev => !prev);
+      setShowServicesTooltip(false);
+    }
+  } else if (isServices) {
+    if (isMobile) {
+      router.push('/services');
+      setMobileMenuOpen(false);
+    } else {
+      setShowServicesTooltip(prev => !prev);
+      setShowAboutTooltip(false);
+    }
+  } else {
+    handleMobileNavClick(item.toLowerCase());
+    setShowAboutTooltip(false);
+    setShowServicesTooltip(false);
+  }
+}}
+
+
+

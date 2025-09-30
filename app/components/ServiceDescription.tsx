@@ -109,7 +109,6 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
         <li key={index}>{feature}</li>  
       ))}
     </ul>
-    
     <button
       onClick={openModal}
       className="mt-4 px-6 py-2 bg-pink-500 text-white rounded-2xl hover:bg-transparent hover:text-black hover:border border-pink-500">
@@ -160,6 +159,8 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
   </div>
 </div>
       {/* Modal for "Inquire Now" */}
+
+
 {isModalOpen && (
   <div onClick={(e) => e.stopPropagation()} className="fixed inset-0 z-50 bg-opacity-0 flex justify-center items-center  py-6 px-4">
     <motion.div 

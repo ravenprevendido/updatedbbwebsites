@@ -4,10 +4,12 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
+
+
+
 interface AboutTooltipProps {
   aboutus: string[];
 }
-
 const AboutTooltip: React.FC<AboutTooltipProps> = ({ aboutus }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -19,9 +21,7 @@ const AboutTooltip: React.FC<AboutTooltipProps> = ({ aboutus }) => {
       'Why Choose Burnbox Printing?': '#why-choose-burnbox',
     };
     const target = routeMap[label];
-
     if (!target) return;
-
     if (label === 'Why Choose Burnbox Printing?') {
       if (pathname === '/') {
         // Already on homepage — scroll
@@ -35,7 +35,6 @@ const AboutTooltip: React.FC<AboutTooltipProps> = ({ aboutus }) => {
       router.push(target); // About Us and Mission navigate normally
     }
   };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
@@ -58,5 +57,4 @@ const AboutTooltip: React.FC<AboutTooltipProps> = ({ aboutus }) => {
     </motion.div>
   );
 };
-
 export default AboutTooltip;
