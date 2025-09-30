@@ -1,99 +1,146 @@
-{['Home', 'About', 'Services', 'Contact'].map((item, index) => {
-  const isAbout = item === 'About';
-  const isServices = item === 'Services';
-  const isTooltipVisible = (isAbout && showAboutTooltip) || (isServices && showServicesTooltip);
+📂 app/context/ServiceContext.tsx
+
+"use client";
+
+import React, { createContext, useContext, useState } from "react";
+
+type ServiceContextType = {
+  hoveredService: string | null;
+  setHoveredService: (service: string | null) => void;
+};
+
+const ServiceContext = createContext<ServiceContextType | undefined>(undefined);
+
+export const ServiceProvider = ({ children }: { children: React.ReactNode }) => {
+  const [hoveredService, setHoveredService] = useState<string | null>(null);
 
   return (
-    <div
-      key={item}
-      className={`w-full animate-fadeInUp ${isTooltipVisible ? 'blur-sm' : ''}`}
-      style={{ animationDelay: `${index * 0.1 + 0.2}s` }}
-    >
-      {/* Top-level Menu Item */}
-      <div className="flex items-center gap-2">
-        <button
-          onClick={() => {
-            if (isAbout) {
-              setShowAboutTooltip(prev => !prev);
-              setShowServicesTooltip(false);
-            } else if (isServices) {
-              setShowServicesTooltip(prev => !prev);
-              setShowAboutTooltip(false);
-            } else {
-              handleMobileNavClick(item.toLowerCase());
-              setShowAboutTooltip(false);
-              setShowServicesTooltip(false);
-            }
-          }}
-          className="flex items-center gap-2 text-left hover:text-pink transition"
-        >
-          <span>{item}</span>
-          {(isAbout || isServices) && (
-            <HiChevronDown
-              className={`
-                text-pink-500 transition-transform duration-300 
-                ${isTooltipVisible ? 'rotate-180' : ''}
-              `}
-              size={18}
-            />
-          )}
-        </button>
-      </div>
-
-      {/* Blur & Centered Tooltip Overlay */}
-      {isTooltipVisible && (
-        <div
-          className="fixed inset-0 z-40 flex justify-center items-center backdrop-blur-sm bg-transparent"
-          onClick={() => {
-            setShowAboutTooltip(false);
-            setShowServicesTooltip(false);
-          }}
-        >
-          <div
-            className="bg-zinc-900 text-white rounded-md shadow-lg p-6 w-[280px]"
-            onClick={e => e.stopPropagation()}
-          >
-            {/* Render submenu content */}
-            {isAbout &&
-              aboutList.map((text, idx) => (
-                <button
-                  key={idx}
-                  className="block w-full py-2 text-sm text-left hover:text-pink transition"
-                  onClick={() => {
-                    const id = text.toLowerCase().replace(/\s+/g, '-');
-                    const section = document.getElementById(id);
-                    if (section) {
-                      section.scrollIntoView({ behavior: 'smooth' });
-                    }
-                    setMobileMenuOpen(false);
-                    setShowAboutTooltip(false);
-                  }}
-                >
-                  {text}
-                </button>
-              ))}
-
-            {isServices &&
-              servicesList.map((service, idx) => (
-                <button
-                  key={idx}
-                  className="block w-full py-2 text-sm text-left hover:text-pink transition"
-                  onClick={() => {
-                    const id = service.name.toLowerCase().replace(/\s+/g, '-');
-                    const section = document.getElementById(id);
-                    if (section) {
-                      section.scrollIntoView({ behavior: 'smooth' });
-                    }
-                    setMobileMenuOpen(false);
-                    setShowServicesTooltip(false);
-                  }}
-                >
-                  {service.name}
-                </button>
-              ))}
-          </div>
-        </div>
-      )}
-    </div>
+    <ServiceContext.Provider value={{ hoveredService, setHoveredService }}>
+      {children}
+    </ServiceContext.Provider>
   );
-})}
+};
+
+export const useServiceContext = () => {
+  const context = useContext(ServiceContext);
+  if (!context) {
+    throw new Error("useServiceContext must be used within ServiceProvider");
+  }
+  return context;
+};
+
+2. Wrap the App with the Provider
+
+📂 app/layout.tsx
+
+import "./globals.css";
+import { ServiceProvider } from "./context/ServiceContext";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <ServiceProvider>
+          {children}
+        </ServiceProvider>
+      </body>
+    </html>
+  );
+}
+
+3. Update Header.tsx
+
+Now, on hover → update global context.
+On click → redirect with query param.
+
+import { useRouter } from "next/navigation";
+import { useServiceContext } from "../context/ServiceContext";
+
+type HeaderProps = {
+  searchValue: string;
+  setSearchValue: (v: string) => void;
+};
+
+const Header: React.FC<HeaderProps> = ({ searchValue, setSearchValue }) => {
+  const router = useRouter();
+  const { setHoveredService } = useServiceContext();
+
+  const handleServiceClick = (name: string) => {
+    router.push(`/services?service=${encodeURIComponent(name)}`);
+  };
+
+  return (
+    <>
+      {showServicesTooltip && (
+        <TooltipServices
+          services={servicesList}
+          onServiceClick={handleServiceClick}
+          onServiceHover={setHoveredService} // ✅ update global context
+        />
+      )}
+    </>
+  );
+};
+4. Update Services/page.tsx
+
+Still use URL param for modal opening.
+
+Also read global hoveredService for animations.
+
+"use client";
+import React, { Suspense, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { Header } from "../components";
+import ServicesInfo from "../components/ServiceInfo";
+import Footer from "../components/Footer";
+import { useServiceContext } from "../context/ServiceContext";
+
+const Page = () => {
+  const [searchValue, setSearchValue] = useState("");
+  const [selectedServiceFromHeader, setSelectedServiceFromHeader] = useState<string | null>(null);
+
+  const searchParams = useSearchParams();
+  const serviceParam = searchParams.get("service");
+  const { hoveredService } = useServiceContext(); // ✅ global hover
+
+  useEffect(() => {
+    if (serviceParam) {
+      setSelectedServiceFromHeader(serviceParam);
+    }
+  }, [serviceParam]);
+
+  return (
+    <>
+      <Suspense fallback={<></>}>
+        <Header searchValue={searchValue} setSearchValue={setSearchValue} />
+        <ServicesInfo
+          searchValue={searchValue}
+          selectedServiceFromHeader={selectedServiceFromHeader}
+          hoveredService={hoveredService}
+        />
+      </Suspense>
+      <Footer />
+    </>
+  );
+};
+
+export default Page;
+
+5. Update ServicesInfo.tsx
+
+React to hover globally with Framer Motion:
+
+<motion.div
+  key={card.id}
+  initial={{ opacity: 0, x: -100 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  transition={{ duration: 1, delay: index * 0.1 }}
+  viewport={{ once: false }}
+  animate={
+    hoveredService?.toLowerCase() === card.title.toLowerCase()
+      ? { scale: 1.05, boxShadow: "0px 0px 20px rgba(236, 72, 153, 0.6)" }
+      : { scale: 1, boxShadow: "none" }
+  }
+>
+  <ImageCard {...card} onClick={handleCardClick} isHovered />
+</motion.div>

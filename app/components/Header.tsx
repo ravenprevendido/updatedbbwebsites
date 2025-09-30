@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import {
@@ -20,11 +19,9 @@ type HeaderProps = {
   searchValue: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
   children?: React.ReactNode;
+  setSelectedServiceFromHeader: (service: string | null) => void;
 }
-
-
-
-const Header: React.FC<HeaderProps> = ({ searchValue, setSearchValue}) => {
+const Header: React.FC<HeaderProps> = ({ searchValue, setSearchValue, setSelectedServiceFromHeader}) => {
 const [isSearchActive, setIsSearchActive] = useState(false);
 const router = useRouter()
  const handleNavClick = (sectionId: string) => {
@@ -39,6 +36,7 @@ const router = useRouter()
     router.push(`/?scrollTo=${sectionId}`);
   }
  };
+
  const searchParams = useSearchParams();
  useEffect(() => {
   const scrollTo = searchParams?.get('scrollTo');
@@ -49,7 +47,6 @@ const router = useRouter()
     }
   }
  }, [searchParams])
-
   const [list, setList] = useState<string[]>([
     'A4 Paper',
     'about',
@@ -65,25 +62,45 @@ const router = useRouter()
 
   const aboutList = ['About Us', 'Mission and Vission', 'Why Choose Burnbox Printing?'];
   
-  const servicesList = [
+  const servicesList  = [
   {
-    name: "Offset Printing / Forms & Reciept",
+    name: "Offset Printing / Forms & reciepts",
   },
-  { name: "Corporate Giveaways" },
-  { name: "Large format Services" },
-  { name: "Stickers & Labels" },
-  { name: "Signage" },
-  { name: "Marketing Collaterals" },
-  { name: "Wall Mural" },
-  { name: "Glass Frosted Sticker" },
-  { name: "Transit adds" },
-  { name: "Graphic Design" },
-  { name: "Logo design" },
-  { name: "Other services.", nestedTooltip: ["Receipt types", "Forms customization", "Bulk orders"],
+  { 
+    name: "Corporate Giveaways" 
+  },
+  {
+    name: "Large format Services" 
+  },
+  { 
+    name: "Stickers & Labels" 
+  },
+  { 
+    name: "Signage" 
+  },
+  { 
+    name: "Marketing Collaterals" 
+  },
+  { 
+    name: "Wall Mural" 
+  },
+  { 
+    name: "Glass Frosted Sticker" 
+  },
+  { 
+    name: "Transit ads" 
+  },
+  { 
+    name: "Graphic Design" 
+  },
+  { 
+    name: "Logo design" 
+  },
+  { 
+    name: "Other services.", nestedTooltip: ["Receipt types", "Forms customization", "Bulk orders"],
  },
 ];
   const buttons = ['wallmural', 'labelsticker', 'photocanvas', 'pvclanyard']
-  
   const [showToolTip, setToolTip] = useState(false)
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showMobileSubmenu, setShowMobileSubmenu] = useState(false)
@@ -94,9 +111,8 @@ const router = useRouter()
   const tooltipRef = useRef<HTMLDivElement | null>(null)
   const hideTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  // ➕ Add this state
 
-
-  
   const filteredList = list.filter((item) => {
     return item.toLowerCase().includes(searchValue.toLowerCase())
   });
@@ -109,8 +125,6 @@ const router = useRouter()
       }
     }
   }
-
-
 
   useEffect(() => {
     // detect 
@@ -162,7 +176,6 @@ const handleMobileNavClick = (id: string) => {
   setShowMobileSubmenu(false)
 }
 
-
   const handleMouseLeaveLeaveAbout = () => {
     if(!isHoveringTooltip) {
       hideTooltipTimeout.current = setTimeout(() => {
@@ -179,7 +192,6 @@ const handleMobileNavClick = (id: string) => {
       }, 200);  // Adjust delay if necessary
     }
   };
-
   // Handle mouse enter the Tooltip component
   const handleMouseEnterTooltip = () => {
     if (hideTooltipTimeout.current) {
@@ -197,7 +209,6 @@ const handleMobileNavClick = (id: string) => {
     }, 200);  // Adjust delay if necessary
   };
 
-
  const handleMouseEnterTooltipAbout = () => {
     if (hideTooltipTimeout.current) {
       clearTimeout(hideTooltipTimeout.current);  // Cancel timeout if mouse enters tooltip
@@ -205,7 +216,6 @@ const handleMobileNavClick = (id: string) => {
     setIsHoveringTooltip(true);
     setShowAboutTooltip(true);  // Show tooltip when mouse is over it
   };
-
   // Handle mouse leave the Tooltip component
   const handleMouseLeaveTooltipAbout = () => {
     setIsHoveringTooltip(false);  // Set flag to false when leaving the tooltip
@@ -213,9 +223,6 @@ const handleMobileNavClick = (id: string) => {
       setShowAboutTooltip(false);  // Hide tooltip after delay
     }, 200);  // Adjust delay if necessary
   };
-
-  
-
 
   return (
     <div className='h-20 w-full flex items-center justify-between px-5 py-3 text-white font-extralight text-lg z-100 bg-black fixed'>
@@ -260,7 +267,6 @@ const handleMobileNavClick = (id: string) => {
           <AboutTooltip aboutus={aboutList}/>
           </div>
         )}
-        
           </span>
         <span 
         className='relative'
@@ -282,7 +288,7 @@ const handleMobileNavClick = (id: string) => {
           onMouseEnter={handleMouseEnterTooltip}
           onMouseLeave={handleMouseLeaveTooltip}
           >
-          <TooltipServices services={servicesList} />
+          <TooltipServices services={servicesList} onServiceClick={(name) => setSelectedServiceFromHeader(name)}/>
           </div>
         )}
       </span>

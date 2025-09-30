@@ -10,12 +10,13 @@ import { image } from 'framer-motion/client';
 
 type Props = {
   searchValue: string;
+  selectedServiceFromHeader: string | null;
 }
 
 const cards = [
   {
     id: '1',
-    title: 'Offset / Printing Forms & reciepts',
+    title: 'Offset Printing / Forms & reciepts',
     frontImg: '/BOOK.png',
     hoverImg: '/largformatimg.webp',
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium recusandae, vero vel molestias voluptatem nam et reprehenderit. Vero repellat ipsa voluptatum maxime commodi.',
@@ -169,7 +170,7 @@ const cards = [
     ]
   }
 ]
-const ServicesInfo: React.FC<Props> =  ({searchValue}) => {
+const ServicesInfo: React.FC<Props> =  ({searchValue,  selectedServiceFromHeader}) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [selectedTitle, setSelectedTitle] = useState<string | null>(null)
   const [selectedDescription, setSelectedDescription] = useState<string | null>(null)
@@ -197,9 +198,22 @@ const ServicesInfo: React.FC<Props> =  ({searchValue}) => {
     setSelectedDescription(null)
     setSelectedFeatures(null)
   }
-
-  
-
+    useEffect(() => {
+    if (selectedServiceFromHeader) {
+      const matchedCard = cards.find(
+        (c) => c.title.toLowerCase() === selectedServiceFromHeader.toLowerCase()
+      );
+      if (matchedCard) {
+        handleCardClick(
+          matchedCard.hoverImg,
+          matchedCard.title,
+          matchedCard.description,
+          matchedCard.features,
+          matchedCard.relatedImages
+        );
+      }
+    }
+  }, [selectedServiceFromHeader]);
     // filter cards
     const filterCards = cards.filter((card) =>
     card.title.toLowerCase().includes(searchValue.toLowerCase())
@@ -221,7 +235,7 @@ const ServicesInfo: React.FC<Props> =  ({searchValue}) => {
               stiffness: 100
             }}
             viewport={{once: false}}
-            
+          
           >
           <ImageCard
             key={card.id}

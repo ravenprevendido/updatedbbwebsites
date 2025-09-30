@@ -9,16 +9,14 @@ import { useState } from 'react';
 
 const page = () => {
  const [searchValue, setSearchValue] = useState("");
- 
+const [selectedServiceFromHeader, setSelectedServiceFromHeader] = useState<string | null>(null);
   return (
     <>
     <Suspense fallback={<></>}>
-    <Header searchValue={searchValue} setSearchValue={setSearchValue} />
-         <ServicesInfo searchValue={searchValue} /></Suspense>
+    <Header searchValue={searchValue} setSearchValue={setSearchValue} setSelectedServiceFromHeader={setSelectedServiceFromHeader}/>
+         <ServicesInfo searchValue={searchValue}  selectedServiceFromHeader={selectedServiceFromHeader} /></Suspense>
           <Footer />
     </>
   )
 }
-
-
 export default page

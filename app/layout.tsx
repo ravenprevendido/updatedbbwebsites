@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
+import { ServiceProvider } from "./context/ServiceContext";
 
 const outfit = Outfit({
   variable: "--font-geist-sans",
@@ -23,7 +24,9 @@ export default function RootLayout({
       <body
         className={`${outfit.variable} antialiased h-[100vh] max-w-[100vw]`}
       >
+        <ServiceProvider>
         {children}
+        </ServiceProvider>
       </body>
     </html>
   );

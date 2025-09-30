@@ -19,6 +19,8 @@ export default function Home() {
   const [videoVisible, isVideoVisible] = useState(true);
   const [showEmailPopup, setShowEmailPopup] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [selectedServiceFromHeader, setSelectedServiceFromHeader] = useState<string | null>(null);
+  
   useEffect(() => {
     if (!videoVisible) {
       setShowEmailPopup(true); // only open once when video becomes invisible
@@ -27,7 +29,7 @@ export default function Home() {
   return (
     <main className="h-full max-w-full flex flex-col bg-black relative overflow-x-hidden p-0 m-0">
       <Suspense fallback={<></>}>
-      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
+      <Header searchValue={searchValue} setSearchValue={setSearchValue}  setSelectedServiceFromHeader={setSelectedServiceFromHeader}/>
         </Suspense>
       {videoVisible && <IntroductionVideo isVideoVisible={isVideoVisible} />}
       <AnimatePresence mode="wait">

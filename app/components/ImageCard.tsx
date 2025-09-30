@@ -41,7 +41,6 @@ const ImageCard: React.FC<Props> = ({ frontImg, hoverImg, title, description, fe
       <div className="absolute -bottom-99 left-0 right-0 bg-gradient-to-t from-black/60 to-black/20 text-white   z-20 transition-all duration-300 group-hover:bottom-0">
         <h3 className="text-xl font-medium top-50 text-center">{title}</h3>
         <img src="/splashimg.png" alt="" />
-        
         {/* <div className="text-sm flex justify-between items-center mt-1">
           <p>Pricing: <strong>Upon Inquiry</strong></p>
           <em className="text-xs">Tap to view</em>

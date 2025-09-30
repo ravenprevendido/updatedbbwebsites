@@ -47,7 +47,6 @@ const StoreDetail: React.FC<StoreDetailProps> = ({ onDirectionClick }) => {
             <button className='bg-gray-800 px-4 py-2 rounded flex items-center gap-2'>
                 <FaPhoneAlt className='text-pink-500'/>
             </button>
-
              <button onClick={onDirectionClick} className='text-pink-500 px-4 bg-transparent border  py-2 rounded flex items-center gap-2'>
                 <FaLocationDot />
                 <span className='text-white'>Directions</span>

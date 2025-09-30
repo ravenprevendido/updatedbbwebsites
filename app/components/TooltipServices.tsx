@@ -5,11 +5,12 @@ import { motion } from "framer-motion";
 
 interface TooltipServicesProps {
   services: { name: string; nestedTooltip?: string[] }[];
+  onServiceClick?: (serviceName: string) => void;
 }
 
-const TooltipServices: React.FC<TooltipServicesProps> = ({ services }) => {
+const TooltipServices: React.FC<TooltipServicesProps> = ({ services, onServiceClick }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
+ 
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
@@ -25,9 +26,9 @@ const TooltipServices: React.FC<TooltipServicesProps> = ({ services }) => {
             className="px-4 py-2 hover:bg-pink-600 hover:text-white cursor-pointer transition-colors duration-200 relative"
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
+            onClick={() => onServiceClick?.(service.name)}
           >
             {service.name}
-
             {/* Nested tooltip */}
             {hoveredIndex === index && service.nestedTooltip && (
               <motion.div
