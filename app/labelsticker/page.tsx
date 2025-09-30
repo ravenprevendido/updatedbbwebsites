@@ -7,13 +7,13 @@ import Labelpage from '../components/LabelSticker'
 
 
 const page = () => {
-   
+    const [searchValue, setSearchValue] = useState("");
+    const [selectedServiceFromHeader, setSelectedServiceFromHeader] = useState<string | null>(null);
+      
   return (
     <div>
   <Suspense fallback={<></>}>
-    <Header searchValue={''} setSearchValue={function (value: React.SetStateAction<string>): void {
-              throw new Error('Function not implemented.')
-          } } />
+    <Header  searchValue={searchValue} setSearchValue={setSearchValue} setSelectedServiceFromHeader={setSelectedServiceFromHeader}/>
           </Suspense>
         <Labelpage/>
           <Footer/>

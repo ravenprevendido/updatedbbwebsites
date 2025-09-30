@@ -374,7 +374,6 @@ const handleMobileNavClick = (id: string) => {
  {['Home', 'About', 'Services', 'Contact'].map((item, index) => {
   const isAbout = item === 'About';
   const isServices = item === 'Services';
-
   return (
     <div
       key={item}
