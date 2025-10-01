@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { TooltipProvider } from "./context/TooltipContext";
 import { HeaderProvider } from "./context/HeaderContext";
+import { Suspense } from "react";
 
 const outfit = Outfit({
   variable: "--font-geist-sans",
@@ -27,7 +28,7 @@ export default function RootLayout({
       <body className={`${outfit.variable} antialiased h-[100vh] max-w-[100vw]`}>
         <TooltipProvider>
           <HeaderProvider>
-            <Header />
+            <Suspense fallback={<div></div>}><Header /></Suspense>
             <main>{children}</main>
             <Footer />
           </HeaderProvider>
