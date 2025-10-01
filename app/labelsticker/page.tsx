@@ -11,13 +11,7 @@ const page = () => {
     const [selectedServiceFromHeader, setSelectedServiceFromHeader] = useState<string | null>(null);
       
   return (
-    <div>
-  <Suspense fallback={<></>}>
-    <Header  searchValue={searchValue} setSearchValue={setSearchValue} setSelectedServiceFromHeader={setSelectedServiceFromHeader}/>
-          </Suspense>
-        <Labelpage/>
-          <Footer/>
-    </div>
+    <div><Labelpage/> </div>
   )
 }
 

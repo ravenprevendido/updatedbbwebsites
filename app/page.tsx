@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { Header, CardCarousel,IntroductionVideo, EmailPopup} from "./components";
+import { Header, CardCarousel,IntroductionVideo, EmailPopup, Maps} from "./components";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import dynamic from "next/dynamic";
@@ -9,11 +9,9 @@ import Footer from "./components/Footer";
 import { useSearchParams } from "next/navigation";
 import WhyChooseBurnboxPage from "./components/WhyChooseBurnBox";
 import GalleryPhotos from "./components/GalleryPhotos";
-const Maps = dynamic(() => import('./components/Maps'), {
-  ssr: false
-});
-
-
+// const Maps = dynamic(() => import('./components/Maps'), {
+//   ssr: false
+// });
 
 export default function Home() {
   const [videoVisible, isVideoVisible] = useState(true);
@@ -29,7 +27,7 @@ export default function Home() {
   return (
     <main className="h-full max-w-full flex flex-col bg-black relative overflow-x-hidden p-0 m-0">
       <Suspense fallback={<></>}>
-      <Header searchValue={searchValue} setSearchValue={setSearchValue}  setSelectedServiceFromHeader={setSelectedServiceFromHeader}/>
+      <Header />
         </Suspense>
       {videoVisible && <IntroductionVideo isVideoVisible={isVideoVisible} />}
       <AnimatePresence mode="wait">
@@ -70,7 +68,7 @@ export default function Home() {
        <GalleryPhotos/>
       </div>
       <Maps />  
-      <Footer/>
+ 
     </main>
   ); 
 }

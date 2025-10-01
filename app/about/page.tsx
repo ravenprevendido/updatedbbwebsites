@@ -5,8 +5,7 @@ import Footer from '../components/Footer';
 import AboutPages from '../components/AboutPages';
 
 const page = () => {
-  const [selectedServiceFromHeader, setSelectedServiceFromHeader] = useState<string | null>(null);
-  const [searchValue, setSearchValue] = useState("");
+ 
   return (
     <div>
     <div  style={{backgroundImage: "url('/missionbg.png')",
@@ -17,11 +16,7 @@ const page = () => {
     opacity: 2
     
     }}>
-      <Suspense fallback={<></>}>
-        <Header searchValue={searchValue} setSearchValue={setSearchValue}  setSelectedServiceFromHeader={setSelectedServiceFromHeader}/>
-          </Suspense>
         <AboutPages/>
-          <Footer/>
       </div>
     </div>
   )

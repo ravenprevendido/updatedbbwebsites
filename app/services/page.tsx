@@ -8,15 +8,11 @@ import ServicesInfo from '../components/ServiceInfo';
 import { useState } from 'react';
 
 const page = () => {
- const [searchValue, setSearchValue] = useState("");
-const [selectedServiceFromHeader, setSelectedServiceFromHeader] = useState<string | null>(null);
+  const searchValue = ""
+  const selectedServiceFromHeader = null;
   return (
-    <>
-    <Suspense fallback={<></>}>
-    <Header searchValue={searchValue} setSearchValue={setSearchValue} setSelectedServiceFromHeader={setSelectedServiceFromHeader}/>
-         <ServicesInfo searchValue={searchValue}  selectedServiceFromHeader={selectedServiceFromHeader} /></Suspense>
-          <Footer />
-    </>
+    <div><ServicesInfo searchValue={searchValue}  selectedServiceFromHeader={selectedServiceFromHeader}/></div>
+    
   )
 }
 export default page

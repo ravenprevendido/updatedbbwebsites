@@ -8,6 +8,7 @@ import { FaFacebook } from "react-icons/fa";
 import { FaViber } from "react-icons/fa";
 const EmailPopup = ({ setShowEmailPopup }: EmailPopupProps) => {
   return (
+    
     <motion.div 
             initial={{ x: 399 }}
             animate={{ x: 0 }}

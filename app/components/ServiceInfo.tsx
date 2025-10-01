@@ -6,6 +6,9 @@ import ServiceDescription from './ServiceDescription'
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { title } from 'process';
 import { image } from 'framer-motion/client';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useHeaderContext } from '../context/HeaderContext';
 
 
 type Props = {
@@ -170,98 +173,137 @@ const cards = [
     ]
   }
 ]
-const ServicesInfo: React.FC<Props> =  ({searchValue,  selectedServiceFromHeader}) => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null)
-  const [selectedTitle, setSelectedTitle] = useState<string | null>(null)
-  const [selectedDescription, setSelectedDescription] = useState<string | null>(null)
-  const [selectedFeatures, setSelectedFeatures] = useState<string[] | null>(null)
-  const [selectedRelatedImages, setSelectedRelatedImages] = useState<{ src: string, label: string }[] | null>(null);
-  const [hoveredCardTitle, setHoveredCardTitle] = useState<string | null>(null);
 
-  const handleCardClick = (image: string, title: string, description: string, features: string[], relatedImages: {src: string, label: string}[]) => {
-    setSelectedImage(image)
-    setSelectedTitle(title)
-    setSelectedDescription(description)
-    setSelectedFeatures(features)
-    setSelectedRelatedImages(relatedImages)
-  }
 
+const ServicesInfo: React.FC<Props> = ({
+  searchValue,
+}) => {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
+  const [selectedDescription, setSelectedDescription] = useState<string | null>(
+    null
+  );
+  const [selectedFeatures, setSelectedFeatures] = useState<string[] | null>(
+    null
+  );
+  const [selectedRelatedImages, setSelectedRelatedImages] = useState<
+    { src: string; label: string }[] | null
+  >(null);
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const handleCardClick = (
+    image: string,
+    title: string,
+    description: string,
+    features: string[],
+    relatedImages: { src: string; label: string }[]
+  ) => {
+    setSelectedImage(image);
+    setSelectedTitle(title);
+    setSelectedDescription(description);
+    setSelectedFeatures(features);
+    setSelectedRelatedImages(relatedImages);
+  };
 
   const handleRelatedImageClick = (image: string, label: string) => {
     setSelectedImage(image);
     setSelectedTitle(label);
-  }
+  };
 
   const closeModal = () => {
-    setSelectedImage(null)
-    setSelectedTitle(null)
-    setSelectedDescription(null)
-    setSelectedFeatures(null)
-  }
-    useEffect(() => {
-    if (selectedServiceFromHeader) {
-      const matchedCard = cards.find(
-        (c) => c.title.toLowerCase() === selectedServiceFromHeader.toLowerCase()
+    setSelectedImage(null);
+    setSelectedTitle(null);
+    setSelectedDescription(null);
+    setSelectedFeatures(null);
+  };
+
+  // ✅ Effect to handle both header selection & query param
+  const { selectedServiceFromHeader, setSelectedServiceFromHeader } = useHeaderContext();
+
+
+useEffect(() => {
+  if (selectedServiceFromHeader) {
+    const matchedCard = cards.find(
+      (c) => c.title.toLowerCase().includes(selectedServiceFromHeader.toLowerCase())
+    );
+
+    if (matchedCard) {
+      handleCardClick(
+        matchedCard.hoverImg,
+        matchedCard.title,
+        matchedCard.description,
+        matchedCard.features,
+        matchedCard.relatedImages
       );
-      if (matchedCard) {
-        handleCardClick(
-          matchedCard.hoverImg,
-          matchedCard.title,
-          matchedCard.description,
-          matchedCard.features,
-          matchedCard.relatedImages
-        );
-      }
     }
-  }, [selectedServiceFromHeader]);
-    // filter cards
-    const filterCards = cards.filter((card) =>
+
+    // ✅ clear context after opening so you can trigger again
+    setSelectedServiceFromHeader(null);
+  }
+}, [selectedServiceFromHeader]);
+
+  // ✅ Filter cards
+  const filterCards = cards.filter((card) =>
     card.title.toLowerCase().includes(searchValue.toLowerCase())
-  )
+  );
+
   return (
-    <section id='gallery' className="custom-gallery-bg min-h-screen w-full bg-white px-4 py-20 flex flex-col items-center">
-      <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-center text-pink mb-12">Services</h1>
+    <section
+      id="gallery"
+      className="custom-gallery-bg min-h-screen w-full bg-white px-4 py-20 flex flex-col items-center"
+    >
+      <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-center text-pink mb-12">
+        Services
+      </h1>
       <div className="md:w-4/5 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {filterCards.map((card, index) => (
           <motion.div
             key={card.id}
-            animate={{x: ["0%", "20%", "60%"]}}
-            initial={{opacity: 0, x: -100}}
-            whileInView={{opacity: 1, x: 0}}
+            initial={{ opacity: 0, x: -100 }}
+            whileInView={{ opacity: 1, x: 0 }}
             transition={{
               duration: 1,
               delay: index * 0.1,
               type: "tween",
-              stiffness: 100
+              stiffness: 100,
             }}
-            viewport={{once: false}}
-          
+            viewport={{ once: false }}
           >
-          <ImageCard
-            key={card.id}
-            frontImg={card.frontImg}
-            hoverImg={card.hoverImg}
-            title={card.title}
-            description={card.description}
-            features={card.features}
-            relatedImages={card.relatedImages || []}
-            onClick={(handleCardClick)} 
-            isHovered
-          />
-     </motion.div>
+            <ImageCard
+              frontImg={card.frontImg}
+              hoverImg={card.hoverImg}
+              title={card.title}
+              description={card.description}
+              features={card.features}
+              relatedImages={card.relatedImages || []}
+              onClick={handleCardClick}
+              isHovered
+            />
+          </motion.div>
         ))}
         {filterCards.length === 0 && (
-          <p className="text-center text-gray-500">No results found for {searchValue}</p>
+          <p className="text-center text-gray-500">
+            No results found for {searchValue}
+          </p>
         )}
       </div>
+
       {/* Modal */}
       {selectedImage && (
-        <div  onClick={closeModal} className="fixed inset-0 z-50 backdrop-blur-md mt-20 bg-white/50 bg-opacity-80 flex items-center justify-center">
-          <div onClick={(e) => e.stopPropagation()} className="relative bg-gradient-to-tr scrollbar-hide from-neutral-500 via-neutral-300 to-neutral-300 p-6 rounded-lg scroll-hidden max-w-4xl max-h-[85vh] overflow-auto flex flex-col items-center ">
-            <ServiceDescription 
-              image={selectedImage ?? image}
-              title={selectedTitle ?? title}
-              description={selectedDescription ?? ''}
+        <div
+          onClick={closeModal}
+          className="fixed inset-0 z-50 backdrop-blur-md mt-20 bg-white/50 bg-opacity-80 flex items-center justify-center"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative bg-gradient-to-tr scrollbar-hide from-neutral-500 via-neutral-300 to-neutral-300 p-6 rounded-lg max-w-4xl max-h-[85vh] overflow-auto flex flex-col items-center"
+          >
+            <ServiceDescription
+              image={selectedImage}
+              title={selectedTitle ?? ""}
+              description={selectedDescription ?? ""}
               features={selectedFeatures ?? []}
               relatedImages={selectedRelatedImages ?? []}
               onRelatedImageClick={handleRelatedImageClick}
@@ -270,8 +312,7 @@ const ServicesInfo: React.FC<Props> =  ({searchValue,  selectedServiceFromHeader
         </div>
       )}
     </section>
-  )
-}
+  );
+};
 
-export default ServicesInfo
-
+export default ServicesInfo;

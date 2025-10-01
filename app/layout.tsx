@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
-import { ServiceProvider } from "./context/ServiceContext";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import { TooltipProvider } from "./context/TooltipContext";
+import { HeaderProvider } from "./context/HeaderContext";
 
 const outfit = Outfit({
   variable: "--font-geist-sans",
@@ -16,17 +19,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body
-        className={`${outfit.variable} antialiased h-[100vh] max-w-[100vw]`}
-      >
-        <ServiceProvider>
-        {children}
-        </ServiceProvider>
+      <body className={`${outfit.variable} antialiased h-[100vh] max-w-[100vw]`}>
+        <TooltipProvider>
+          <HeaderProvider>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </HeaderProvider>
+        </TooltipProvider>
       </body>
     </html>
   );

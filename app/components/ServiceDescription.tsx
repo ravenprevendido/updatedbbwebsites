@@ -109,24 +109,32 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
         <li key={index}>{feature}</li>  
       ))}
     </ul>
+    <div className='flex sm:flex-row gap-4 mt-4 justify-center md:justify-start w-full'>
     <button
       onClick={openModal}
-      className="mt-4 px-6 py-2 bg-pink-500 text-white rounded-2xl hover:bg-transparent hover:text-black hover:border border-pink-500">
+      className="w-full sm:w-auto px-6 py-2 bg-pink-500 text-white rounded-2xl 
+               hover:bg-transparent hover:text-black hover:border border-pink-500
+               flex items-center justify-center text-center leading-normal">
       Inquire Now
     </button>
     <button
-      className='border-pink-500 border-1 rounded-2xl px-6 py-2 hover:bg-pink-500  hover:text-white ml-22'
+      className='w-full sm:w-auto border border-pink-500 rounded-2xl px-6 py-2 
+               hover:bg-pink-500 hover:text-white
+               flex items-center justify-center text-center leading-normal'
     >
       Try your Design
     </button>
+    </div>
   </div>
 </div>
+
+
+
 {/* Image Slider */}
 <div className='-mt-20'>
 <p className="text-black font-regular text-center  lg:mt-10 mt-30 md:py-16 text-2xl font-bold">
   You might want also like this
 </p>
-
 </div>
 <div
   ref={scrollRef}

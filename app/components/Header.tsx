@@ -10,20 +10,33 @@ import {
 import { HiChevronDown } from 'react-icons/hi2'
 import { RiMenu4Line } from "react-icons/ri";
 import ToolTip from './ToolTip'
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import TooltipServices from './TooltipServices';
 import AboutTooltip from './AboutTooltip';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useHeaderContext } from '../context/HeaderContext';
 // header props
-type HeaderProps = {
-  searchValue: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
-  children?: React.ReactNode;
-  setSelectedServiceFromHeader: (service: string | null) => void;
-}
-const Header: React.FC<HeaderProps> = ({ searchValue, setSearchValue, setSelectedServiceFromHeader}) => {
+
+const Header: React.FC = () => {
+
+const {searchValue, setSearchValue, setSelectedServiceFromHeader} = useHeaderContext();
+
+const pathname = usePathname();
+
+const handleTooltipServiceClick = (serviceName: string) => {
+  const encoded = encodeURIComponent(serviceName);
+
+  if (pathname === "/services") {
+    // ✅ direct set to context (ServicesInfo will pick it up)
+    setSelectedServiceFromHeader(serviceName);
+  } else {
+    router.push(`/services?selected=${encoded}`);
+  }
+};
+
 const [isSearchActive, setIsSearchActive] = useState(false);
 const router = useRouter()
+
  const handleNavClick = (sectionId: string) => {
   if(typeof window !== 'undefined' && window.location.pathname === '/') {
     const section = document.getElementById(sectionId);
@@ -64,39 +77,51 @@ const router = useRouter()
   
   const servicesList  = [
   {
+    id: 1,
     name: "Offset Printing / Forms & reciepts",
   },
   { 
+    id: 2,
     name: "Corporate Giveaways" 
   },
   {
+    id: 3,
     name: "Large format Services" 
   },
   { 
+    id: 4,
     name: "Stickers & Labels" 
   },
   { 
+    id: 5,
     name: "Signage" 
   },
   { 
+    id: 6,
     name: "Marketing Collaterals" 
   },
   { 
+    id: 7,
     name: "Wall Mural" 
   },
   { 
+    id: 8,
     name: "Glass Frosted Sticker" 
   },
   { 
+    id: 9,
     name: "Transit ads" 
   },
   { 
+    id: 10,
     name: "Graphic Design" 
   },
   { 
+    id: 11,
     name: "Logo design" 
   },
   { 
+    id: 12,
     name: "Other services.", nestedTooltip: ["Receipt types", "Forms customization", "Bulk orders"],
  },
 ];
@@ -223,7 +248,6 @@ const handleMobileNavClick = (id: string) => {
       setShowAboutTooltip(false);  // Hide tooltip after delay
     }, 200);  // Adjust delay if necessary
   };
-
   return (
     <div className='h-20 w-full flex items-center justify-between px-5 py-3 text-white font-extralight text-lg z-100 bg-black fixed'>
       {/* Logo */}
@@ -288,7 +312,7 @@ const handleMobileNavClick = (id: string) => {
           onMouseEnter={handleMouseEnterTooltip}
           onMouseLeave={handleMouseLeaveTooltip}
           >
-          <TooltipServices services={servicesList} onServiceClick={(name) => setSelectedServiceFromHeader(name)}/>
+          <TooltipServices services={servicesList} onServiceClick={(serviceName) => handleTooltipServiceClick(serviceName)}/>
           </div>
         )}
       </span>
@@ -374,6 +398,8 @@ const handleMobileNavClick = (id: string) => {
  {['Home', 'About', 'Services', 'Contact'].map((item, index) => {
   const isAbout = item === 'About';
   const isServices = item === 'Services';
+  const isHome = item === 'Home';
+  const isContact  = item === 'Contact'
   return (
     <div
       key={item}
@@ -400,6 +426,11 @@ const handleMobileNavClick = (id: string) => {
               setShowServicesTooltip(prev => !prev);
               setShowAboutTooltip(false);
             }
+          } else if(isHome) {
+            router.push('/#home')
+            setMobileMenuOpen(false)
+          } else if (isContact) {
+            router.push('/#contact')
           } else {
             handleMobileNavClick(item.toLowerCase());
             setShowAboutTooltip(false);
@@ -408,6 +439,7 @@ const handleMobileNavClick = (id: string) => {
         }}
           className="flex items-center gap-2 text-left hover:text-pink transition"
         >
+          
           <span>{item}</span>
           {(isAbout || isServices) && (
             <HiChevronDown
@@ -420,7 +452,6 @@ const handleMobileNavClick = (id: string) => {
           )}
         </button>
       </div>
-
       {/* Submenu */}
       <AnimatePresence>
       {isAbout && showAboutTooltip && (
