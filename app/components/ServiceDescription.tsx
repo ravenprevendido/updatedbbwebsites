@@ -109,7 +109,8 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
         <li key={index}>{feature}</li>  
       ))}
     </ul>
-    <div className='flex gap-3 mt-4 w-full justify-center'>
+
+    <div className='flex gap-3 md:gap-22 mt-4 w-full justify-center'>
     <button
       onClick={openModal}
       className="flex-1 max-w-[160px] max-[350px]:max-w-[140px] 
@@ -127,6 +128,7 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
       Try your Design
     </button>
     </div>
+
   </div>
 </div>
 
