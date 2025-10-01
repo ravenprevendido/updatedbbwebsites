@@ -11,8 +11,8 @@ const page = () => {
   const searchValue = ""
   const selectedServiceFromHeader = null;
   return (
-    <div><ServicesInfo searchValue={searchValue}  selectedServiceFromHeader={selectedServiceFromHeader}/></div>
-    
+    <div>
+      <ServicesInfo searchValue={searchValue}  selectedServiceFromHeader={selectedServiceFromHeader}/></div>
   )
 }
 export default page
