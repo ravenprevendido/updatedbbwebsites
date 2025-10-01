@@ -388,7 +388,7 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
 
         </div>
         {/* Other ways to contact */}
-        <div className="mt-32 text-center text-xl  text-gray-400">Other ways to contact</div>
+        <div className="mt-6 text-center text-xl  text-gray-400">Other ways to contact</div>
        <div className="flex justify-between text-xs text-gray-500 mt-4 px-2 md:px-4">
         <div className="space-y-4 text-left text-sm">
           <p>+63 917 700 8364</p>
@@ -403,8 +403,12 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
           <p><a href="https://burnboxprinting.com">burnboxprinting.com</a></p>
         </div>
       </div>
-
-      <FaArrowLeft onClick={closeModal} className='text-pink ml-120 cursor-pointer mt-10 text-xl'/>
+        <div className="w-full flex justify-end mt-4 mb-2">
+        <FaArrowLeft 
+          onClick={closeModal} 
+          className="text-pink-500 cursor-pointer text-2xl"
+        />
+      </div>
       </div>
       {/* Close Button (top-right) */}
       
