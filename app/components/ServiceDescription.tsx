@@ -172,29 +172,31 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
 
 
 {isModalOpen && (
-  <div onClick={(e) => e.stopPropagation()} className="fixed inset-0 z-50 bg-opacity-0 flex justify-center items-center  py-6 px-4">
+  <div onClick={(e) => e.stopPropagation()} className="fixed inset-0 z-50 bg-opacity-0 flex justify-center items-center  py-4 px-2 sm:px-4">
     <motion.div 
       initial={{opacity: 0, scale: 0.8}}
       animate={{opacity: 1, scale: 1}}
       transition={{duration: 0.2, ease: 'easeOut'}}
+      className='w-full max-w-md sm:max-w-2xl md:max-w-4xl lg:max-w-6xl'
     >
     <div onClick={(e) => e.stopPropagation()} className="bg-[#1a1a1a] text-white p-6 md:p-8 rounded-lg w-full max-w-6xl max-h-[100vh] overflow-y-auto  flex flex-col md:flex-row gap-8">
       {/* Left: Product Details */}
-      <div className="w-full md:w-1/2 border-pink  p-4  rounded-md bg-[#262626] flex flex-col ">
+        <div className="w-full md:w-1/2 p-4 rounded-md bg-[#262626] flex flex-col">
         <div className="w-full aspect-square overflow-hidden flex justify-center">
           <motion.img
             src={selectedImage}
             alt={title}
-            className="max-w-xs h-auto object-contain"
+            className="w-full max-w-[250px] sm:max-w-xs object-contain"
             animate={{rotateY: 360}}
-           transition={{duration: 0.8, ease: 'easeInOut' }}
-          >
-          </motion.img>
+            transition={{duration: 0.8, ease: 'easeInOut'}}
+          />
         </div>
-        <h2 className="mt-4 text-[25px] text-center font-bold opacity-90">{selectedTitle}</h2>
-        <p className="text-sm text-center text-gray-400 mt-2 justify-center ">{description}</p>
-        <p className="text-pink-400 font-medium text-sm text-center mt-4">Key Features</p>
-        <ul className="text-left text-sm  pl-5 text-gray-300 mt-2">
+        <h2 className="mt-3 text-lg sm:text-xl md:text-2xl text-center font-bold opacity-90">
+          {selectedTitle}
+        </h2>
+        <p className="text-xs sm:text-sm text-center text-gray-400 mt-2">{description}</p>
+        <p className="text-pink-400 font-medium text-xs sm:text-sm text-center mt-3">Key Features</p>
+        <ul className="text-left text-xs sm:text-sm pl-4 text-gray-300 mt-2 space-y-1">
           {features.map((feature, index) => (
             <li key={index}>{feature}</li>
           ))}
@@ -202,7 +204,7 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
       </div>
       {/* Right: Contact Form */}
       <div className="w-full md:w-1/2 flex flex-col gap-4  p-4">
-        <h3 className="text-center font-semibold text-gray-200 mb-4">
+        <h3 className="text-center font-semibold text-gray-200 mb-4  sm:text-lg ">
           {formStep === 'contact' && 'Fill Out this form'}
           {formStep === 'otp' && 'Enter OTP sent to your email'}
           {formStep === 'inquiry' && 'Send Product Inquiry'}
@@ -386,7 +388,7 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
 
         </div>
         {/* Other ways to contact */}
-        <div className="mt-35 text-center text-xl text-gray-400">Other ways to contact</div>
+        <div className="mt-32 text-center text-xl  text-gray-400">Other ways to contact</div>
        <div className="flex justify-between text-xs text-gray-500 mt-4 px-2 md:px-4">
         <div className="space-y-4 text-left text-sm">
           <p>+63 917 700 8364</p>
