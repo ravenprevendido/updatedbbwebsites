@@ -109,16 +109,18 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
         <li key={index}>{feature}</li>  
       ))}
     </ul>
-    <div className='flex sm:flex-row gap-4 mt-4 justify-center md:justify-start w-full'>
+    <div className='flex gap-3 mt-4 w-full justify-center'>
     <button
       onClick={openModal}
-      className="w-full sm:w-auto px-6 py-2 bg-pink-500 text-white rounded-2xl 
+      className="flex-1 max-w-[160px] max-[350px]:max-w-[140px] 
+               px-4 py-2 bg-pink-500 text-white rounded-2xl 
                hover:bg-transparent hover:text-black hover:border border-pink-500
                flex items-center justify-center text-center leading-normal">
       Inquire Now
     </button>
     <button
-      className='w-full sm:w-auto border border-pink-500 rounded-2xl px-6 py-2 
+      className='flex-1 max-w-[160px] max-[350px]:max-w-[140px] 
+               border border-pink-500 rounded-2xl px-4 py-2 
                hover:bg-pink-500 hover:text-white
                flex items-center justify-center text-center leading-normal'
     >
