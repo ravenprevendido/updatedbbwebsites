@@ -67,9 +67,9 @@ export default function Home() {
       <div  className="h-auto w-full bg-white flex flex-col">
        <GalleryPhotos/>
       </div>
-      <Maps />  
- 
-    </main>
+      <Maps /> 
+     <Footer/>
+  </main>
   ); 
 }
 

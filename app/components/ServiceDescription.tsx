@@ -132,8 +132,6 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
   </div>
 </div>
 
-
-
 {/* Image Slider */}
 <div className='-mt-20'>
 <p className="text-black font-regular text-center  lg:mt-10 mt-30 md:py-16 text-2xl font-bold">
@@ -154,7 +152,6 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
         key={index}
         className="relative group w-40 h-40 bg-gradient-to-br from-neutral-700 to-neutral-500 rounded-lg overflow-hidden flex items-center justify-center"
       >
-
         <img
           key={index}
           src={item.src}
@@ -171,7 +168,6 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
   </div>
 </div>
       {/* Modal for "Inquire Now" */}
-
 
 {isModalOpen && (
   <div onClick={(e) => e.stopPropagation()} className="fixed inset-0 z-50 bg-opacity-0 flex justify-center items-center  py-4 px-2 sm:px-4">
@@ -310,7 +306,6 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
             <div className="text-green-400 text-5xl animate-ping">✔</div>
           </div>
         )}
-     
          {/* Arrow Button */}
         <div className="flex justify-end mt-2">
           <button
@@ -361,7 +356,6 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
 
                   if (!res.ok) throw new Error('Failed to send inquiry');
                   data = await res.json();
-
                   if (data.success) {
                     setFormStep('success');
                     setTimeout(() => {
@@ -411,17 +405,13 @@ const ServiceDescription: React.FC<Props> = ({ image, title, description, featur
           className="text-pink-500 cursor-pointer text-2xl"
         />
       </div>
-      </div>
+    </div>
       {/* Close Button (top-right) */}
-      
     </div>
       </motion.div>
   </div>
 )}
-
     </div>
   ) ;
 };
-
 export default ServiceDescription;
-

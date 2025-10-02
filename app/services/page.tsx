@@ -13,6 +13,7 @@ const page = () => {
   return (
     <div>
      <Suspense fallback={<></>}><ServicesInfo searchValue={searchValue}  selectedServiceFromHeader={selectedServiceFromHeader}/></Suspense> </div>
-  )
+    
+)
 }
 export default page
