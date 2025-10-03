@@ -28,7 +28,7 @@ const GalleryPhotos: React.FC = () => {
 
   const loadPosts = async () => {
     try {
-      const res = await fetch('/api/photos');
+      const res = await fetch('/api/fbgal');
       const data = await res.json();
       if (Array.isArray(data)) {
         setPosts(data);

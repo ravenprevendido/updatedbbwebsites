@@ -23,16 +23,22 @@ const {searchValue, setSearchValue, setSelectedServiceFromHeader} = useHeaderCon
 
 const pathname = usePathname();
 
+// Header.tsx (only the handler)
 const handleTooltipServiceClick = (serviceName: string) => {
-  const encoded = encodeURIComponent(serviceName);
+  if (typeof window === "undefined") return;
 
+  // kung nasa /services na, gamitin ang context para agad mag-open
   if (pathname === "/services") {
-    // ✅ direct set to context (ServicesInfo will pick it up)
     setSelectedServiceFromHeader(serviceName);
-  } else {
-    router.push(`/services?selected=${encoded}`);
+    setShowServicesTooltip(false); // hide tooltip
+    return;
   }
+
+  // otherwise store temporarily and navigate (no querystring)
+  sessionStorage.setItem("selectedService", serviceName);
+  router.push("/services");
 };
+
 
 const [isSearchActive, setIsSearchActive] = useState(false);
 const router = useRouter()
